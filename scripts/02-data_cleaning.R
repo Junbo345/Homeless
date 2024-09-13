@@ -9,6 +9,7 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(stringr)
 
 #### Clean data ####
 raw_data <- read_csv("inputs/data/raw_data.csv")
@@ -29,5 +30,17 @@ cleaned_data1 <- cleaned_data |>
            population_group == "Refugees") |>
   tidyr::drop_na()
 
+data <- cleaned_data1
+
+data$date_mmm_yy <- as.Date(paste0("01-", data$date_mmm_yy), format="%d-%b-%y")
+
+# Create a new column for Quarters
+data$Quarter <- paste0(year(data$date_mmm_yy), "Q", quarter(data$date_mmm_yy))
+
+# Group by Quarter and population_group, then calculate the average for all other columns
+quarterly_data <- data %>%
+  group_by(Quarter, population_group) %>%
+  summarise(across(actively_homeless:Pre_Retirement_and_Retirement_Age, mean, na.rm = TRUE))
+
 #### Save data ####
-write_csv(cleaned_data1, "outputs/data/analysis_data.csv")
+write_csv(quarterly_data, "outputs/data/analysis_data.csv")
