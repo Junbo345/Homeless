@@ -24,7 +24,7 @@ cleaned_data1 <- cleaned_data |>
   mutate(Pre_Retirement_and_Retirement_Age = age45_54 + age55_64 + age65over) |>
   select(date_mmm_yy, population_group, actively_homeless, 
          gender_female, gender_male, gender_transgender_non_binary_or_two_spirit,
-         Early_Career_Stage, Working_Age, Pre-Retirement_and_Retirement_Age) |>
+         Early_Career_Stage, Working_Age, Pre_Retirement_and_Retirement_Age) |>
   filter(population_group == "All Population" | population_group == "Chronic" |
            population_group == "Refugees") |>
   tidyr::drop_na()
