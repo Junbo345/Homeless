@@ -11,34 +11,23 @@
 library(tidyverse)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+raw_data <- read_csv("inputs/data/raw_data.csv")
 
 cleaned_data <-
   raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
+  janitor::clean_names() 
+
+cleaned_data1 <- cleaned_data |> 
   mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
+    Early_Career_Stage = ageunder16 + age16_24) |>
+  mutate(Working_Age = age25_34 + age35_44) |>
+  mutate(Pre_Retirement_and_Retirement_Age = age45_54 + age55_64 + age65over) |>
+  select(date_mmm_yy, population_group, actively_homeless, 
+         gender_female, gender_male, gender_transgender_non_binary_or_two_spirit,
+         Early_Career_Stage, Working_Age, Pre-Retirement_and_Retirement_Age) |>
+  filter(population_group == "All Population" | population_group == "Chronic" |
+           population_group == "Refugees") |>
   tidyr::drop_na()
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(cleaned_data1, "outputs/data/analysis_data.csv")
