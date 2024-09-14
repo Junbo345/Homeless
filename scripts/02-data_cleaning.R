@@ -11,11 +11,10 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(stringr)
 
 #### Clean data ####
 raw_data <- read_csv("inputs/data/raw_data.csv")
-
+c
 cleaned_data <-
   raw_data |>
   janitor::clean_names() 
@@ -42,7 +41,10 @@ data$Quarter <- paste0(year(data$date_mmm_yy), "Q", quarter(data$date_mmm_yy))
 # Group by Quarter and population_group, then calculate the average for all other columns
 quarterly_data <- data %>%
   group_by(Quarter, population_group) %>%
-  summarise(across(actively_homeless:Pre_Retirement_and_Retirement_Age, mean, na.rm = TRUE))
+  summarise(across(actively_homeless:Pre_Retirement_and_Retirement_Age, mean, 
+                   na.rm = TRUE))
 
+quarterly_data <- quarterly_data |> 
+  filter(Quarter != '2024Q3')
 #### Save data ####
 write_csv(quarterly_data, "outputs/data/analysis_data.csv")

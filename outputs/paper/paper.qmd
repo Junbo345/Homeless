@@ -8,6 +8,7 @@ date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -36,10 +37,11 @@ cleaned_data <- read_csv(here("outputs/data/analysis_data.csv"))
 
 
 # Introduction
+According to @canadianobservatory2012definition, homeless is defined as "the situation of an individual, family or community without stable, safe, permanent, appropriate housing, or the immediate prospect, means and ability of acquiring it". It is estimated that about 23,500 Canadian people experienced every type of Homeless every year @gaetz2014state. On SEP 12, 2024, there are still more than 9500 people staying in shelters in the city of Toronto @toronto2024shelter. To reduce homelessness, Toronto city government published the supportive houseing development plan, which aims to build more affordable housings for the homeless people @toronto2024affordable. A recent two-year plan starting 2022 aiming to build 4,000 more affordable homes as well as supportive houseings by the end of 2024. 
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+In this paper, we studied the demographical shift of total homeless populations in the city of Toronto, and find that the underlyin demographics of homesless populations changed significantly. This would indicate that the tradition plan which mainly focus on buliding houses would no longer solve new homeless problem. 
 
-The remainder of this paper is structured as follows. @sec-data....
+In the following sections, we will first introduce our sourse of data as well as potential cleaning procedures. Then, we will show our results of the demographic change. Finally, we would indicate the reason of our claim base on the analysis of the result and give some suggestions that would help better reduce homelessness in the city.
 
 
 
@@ -231,25 +233,18 @@ ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
 
 
 # Discussion
-Based on the analysis of results section, we observe that, even though the overall population of homeless people did not incur sgnificant variation in the past six years, its demographics changed a lot. Especially, the proportion of refugees, chronic people as well as working aged people. In the past, City of Toronto has devolted its effort on reducing the number of homeless people, espically through projects of building affordable houses @torontosol. However, our study show that with the change of demographic, the city government should also give its focus on other strategies of reducing homelessness. 
+Based on the analysis of the results section, we observe that, even though the overall population of homeless people did not incur significant variation in the past six years, its demographics changed a lot. Specifically, the proportion of refugees, chronic people as well as working-aged people. In the past, the City of Toronto has devoted its efforts to reducing the number of homeless people, especially through projects of building affordable houses [@torontosol]. However, our study shows that with the change of demographics, the city government should also give its focus on other strategies for reducing homelessness. 
 
-First, as the result section points out, the proportion of chronically homeless people nearly doubled in the past six years. Despite its nature of long-lasting homeless status, studies have also shown that chronic homelessness is closely associated with chronic illness or mental problems @chronic. As pointed out by another study, the average income of people experiencing mental illness and other types of disorders is significantly lower than that of normal people @Sareen2011. Thus, it is very hard for those people who have already experienced mental and physical illness to escape homelessness. In addition, homeless people would face more severe health problems due to lack of adequate food, discrimination, barriers to health care, etc @Sleet2021. A combination of these would become an obvious negative cycle: illness leads to a decrease in income, which leads to becoming homeless, which would further depend on illness. What the city government can do, on the other hand, is to increase the public health care system, especially focused on low-income and homeless people. In fact, merely building houses only increased the proportion of chronically homeless people and its aim is to reduce @house_not. 
+First, as the result section points out, the proportion of chronically homeless people nearly doubled in the past six years. Despite its nature of long-lasting homeless status, studies have also shown that chronic homelessness is closely associated with chronic illness or mental problems @chronic. As pointed out by another study, the average income of people experiencing mental illness and other types of disorders is significantly lower than that of normal people @Sareen2011. Thus, it is very hard for those people who have already experienced mental and physical illness to escape homelessness. In addition, homeless people would face more severe health problems due to lack of adequate food, discrimination, barriers to health care, etc [@Sleet2021]. A combination of these would become an obvious negative cycle: illness leads to a decrease in income, which leads to becoming homeless, which would further depend on illness. What the city government can do, on the other hand, is to increase the public health care system, especially focused on low-income and homeless people. In fact, merely building houses only increased the proportion of chronically homeless people and its aim is to reduce [@house_not]. 
 
 Second, due to increased global conflict in Eastern Europe and the Middle East, the number of refugees entering Toronto has increased @cbc23.On the other hand, the Toronto government has not been prepared to support such a huge increase of refugees as the portion of refugees in homeless people roared from less than 20% in the first three quarters of 2021 to nearly 60% at second quarter 2024. We observe an emergency for the government to increase its speed of helping these newly entered refugees and give them a job and a secure place to live. 
 
-Finally, we observe an increase in the proportion of people of worked-age. This indicates the need of the government to create more jobs for the people who need it to make a living, like people who are experiencing mental health problems or physical disabilities.
+Finally, we observe an increase in the proportion of people of working age. This indicates the need for the government to create more jobs for the people who need them to make a living, like people who are experiencing mental health problems or physical disabilities. 
 
-## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-## Third discussion point
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+Even though our data is the most uptodate and accurate date aviliable for homeless population on opendatatoronto, it might have potential bias towards estimation the ture homeless population in city of Toronto. One clear bias is that people would not stay in the shelter everyday and they would enter and exit the shelter frequently [@toronto_shelter_data]. Correctly measure the ture popution demegraphic is a very diffcult on-going problem in Canada, but the shelter flow data would provide a proper estimate of our interest [@dionne2023review]. To understand the probelms better and develop more strategies the next steps would be to research stratgies that could reach out and survey the population that is diffcult to contact such as unsheltered homeless population. Also, a new homeless reduction plan should to develop and adopt to suit the ongoing change of demegraphic of homeless population.
 
 \newpage
 
