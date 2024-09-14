@@ -231,7 +231,9 @@ ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
 
 
 # Discussion
+Based on the analysis of results section, we observe that, even though the overall population of homeless people did not incur sgnificant variation in the past six years, its demographics changed a lot. Especially, the proportion of refugees, chronic people as well as working aged people. In the past, City of Toronto has devolted its effort on reducing the number of homeless people, espically through projects of building affordable houses @torontosol. However, our study show that with the change of demographic, the city government should also give its focus on other strategies of reducing homelessness.
 
+First, as the result section points out, the proportion of chronic homeless people nearly doubled in the past six years. Despite its nature of long lasting homeless status, studies have also shown that chronic homelessness is closed associated with chronic illness or mental problems @chronic. As point by another study, average income of people experiencing mental illness and other types of disorders is significantly lower than normal people @Sareen2011. Thus, it is very hard for those people who have already experiencing mental and physical illness to escape homeless. In addition, homeless people would face more severe health problem due to lack of adequate food, discrimination, barriers to health care etc @Sleet2021. A combination of these would become an obvious negative cycle: illness lead to decrease of income, which leads to become homeless, which would further depend illness. What the city government can do, on the other hand, is to increase public health care system, espically focused to those low-income and homeless people. In fact, merely building houses only increased the proportion of chronic homeless people besides its aim is to reduce @house_not.
 
 ## First discussion point {#sec-first-point}
 
