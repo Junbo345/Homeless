@@ -1,9 +1,8 @@
 ---
 title: "My title"
-subtitle: "My subtitle if needed"
 author: 
   - Junbo Li
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data are available at: https://github.com/Junbo345/Homeless."
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -19,15 +18,9 @@ bibliography: references.bib
 #| message: false
 
 #### Package setup ####
-
-library(tidyverse)
 library(here)
-library(tinytex)
-library(dplyr)
-library(tibble)
+library(tidyverse)
 library(opendatatoronto)
-library(janitor)
-library(ggplot2)
 library(knitr)
 
 # Read data
@@ -37,11 +30,11 @@ cleaned_data <- read_csv(here("outputs/data/analysis_data.csv"))
 
 
 # Introduction
-According to @canadianobservatory2012definition, homeless is defined as "the situation of an individual, family or community without stable, safe, permanent, appropriate housing, or the immediate prospect, means and ability of acquiring it". It is estimated that about 23,500 Canadian people experienced every type of Homeless every year @gaetz2014state. On SEP 12, 2024, there are still more than 9500 people staying in shelters in the city of Toronto @toronto2024shelter. To reduce homelessness, Toronto city government published the supportive houseing development plan, which aims to build more affordable housings for the homeless people @toronto2024affordable. A recent two-year plan starting 2022 aiming to build 4,000 more affordable homes as well as supportive houseings by the end of 2024. 
+Homelessness is defined as "the situation of an individual, family or community without stable, safe, permanent, appropriate housing, or the immediate prospect, means and ability of acquiring it" [@canadianobservatory2012definition]. According to @gaetz2014state, approximately 23,500 Canadian people experience every type of homelessness every year. On SEP 12, 2024, there are still more than 9500 people staying in shelters in the city of Toronto [@toronto_shelter_census]. To address this ongoing crisis, the Toronto city government launched the supportive housing development plan, which aims to build more affordable housing for homeless people [@toronto2024affordable]. A recent two-year plan starting in 2022 aims to build 4,000 more affordable homes as well as supportive housing by the end of 2024 [@toronto2024affordable].
 
-In this paper, we studied the demographical shift of total homeless populations in the city of Toronto, and find that the underlyin demographics of homesless populations changed significantly. This would indicate that the tradition plan which mainly focus on buliding houses would no longer solve new homeless problem. 
+While the city of Toronto has concentrated its efforts on building more affordable housing, our analysis in this paper has found that the underlying demographics of homeless populations changed significantly. This would indicate that the traditional housing-centric plan would no longer solve the newly evolved homeless problem.  
 
-In the following sections, we will first introduce our sourse of data as well as potential cleaning procedures. Then, we will show our results of the demographic change. Finally, we would indicate the reason of our claim base on the analysis of the result and give some suggestions that would help better reduce homelessness in the city.
+In this paper, we delve into the demographic shift of Toronto's homeless population in greater detail by studying the monthly data from Toronto's shelter system from 2018 Jan to 2024 Jun [@toronto_shelter_data]. We start by outlining the data source, the way we accessed the data, as well as procedures we used to clean and prepare the data in analysis in **Data** section. Following this, in **Result** section, we draw the bar graph demonstrating the trend in demographic changes and present our key findings. Finally, in **Discussion** section, we analyze the implications of the trends we found and offer recommendations for policy changes that would closely address the needs of different demographic groups. 
 
 
 
@@ -49,8 +42,7 @@ In the following sections, we will first introduce our sourse of data as well as
 
 ## Raw data
 
-The data used in here is downloaded from opendattoronto [@citeOpenDataToronto]. Specifically, we used the Shelter System Flow Data
-released by Toronto government [@toronto_shelter_data].The data loading, cleaning and analysis process is done by R [@citeR], togehter with packges include tidyverse [@tidy]... This data measures number of people requiring for shelter inside city of Toronto from Jan-2018 till Jun-2024 by each month (actively_homeless). Also, this dataset provides division of age group, refugee status, gender, as well as chronic status to provide further detailed study into the change of composition of homeless people over time. While there are several other dataset including daily shelter occupacancy in opendatatoronto, they do not have the subdivision information such as age or refugee status as this one. 
+The data used here is downloaded from opendatatoronto [@citeOpenDataToronto]. Specifically, we used the Shelter System Flow Data released by the Toronto government [@toronto_shelter_data]. The data loading, cleaning, and analysis process is done by R [@citeR], together with packages including tidyverse [@tidy] here [@here], and knitr [@knitr]. This data tracks the number of people requiring shelter inside the city of Toronto from Jan 2018 until Jun 2024 monthly (variable named **actively_homeless**). Also, this data set provides detailed demographic breakdowns such as age group, refugee status, gender, and chronic status allowing us to deploy analysis into the change of composition of homeless people over time. While there are several other data sets including daily shelter occupancy in opendatatoronto, the lack of detailed demographic information makes them unsuitable for our study.
 
 ## Cleaned Data
 
@@ -170,10 +162,6 @@ ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
 #| echo: false
 #| fig-cap: "Proportion of working age population to Active Population by Quarter"
 
-# Load necessary libraries
-library(ggplot2)
-library(dplyr)
-
 # Filter the data for 'All Population' group
 all_population_data <- subset(cleaned_data, population_group == 'All Population')
 
@@ -237,7 +225,7 @@ Based on the analysis of the results section, we observe that, even though the o
 
 First, as the result section points out, the proportion of chronically homeless people nearly doubled in the past six years. Despite its nature of long-lasting homeless status, studies have also shown that chronic homelessness is closely associated with chronic illness or mental problems @chronic. As pointed out by another study, the average income of people experiencing mental illness and other types of disorders is significantly lower than that of normal people @Sareen2011. Thus, it is very hard for those people who have already experienced mental and physical illness to escape homelessness. In addition, homeless people would face more severe health problems due to lack of adequate food, discrimination, barriers to health care, etc [@Sleet2021]. A combination of these would become an obvious negative cycle: illness leads to a decrease in income, which leads to becoming homeless, which would further depend on illness. What the city government can do, on the other hand, is to increase the public health care system, especially focused on low-income and homeless people. In fact, merely building houses only increased the proportion of chronically homeless people and its aim is to reduce [@house_not]. 
 
-Second, due to increased global conflict in Eastern Europe and the Middle East, the number of refugees entering Toronto has increased @cbc23.On the other hand, the Toronto government has not been prepared to support such a huge increase of refugees as the portion of refugees in homeless people roared from less than 20% in the first three quarters of 2021 to nearly 60% at second quarter 2024. We observe an emergency for the government to increase its speed of helping these newly entered refugees and give them a job and a secure place to live. 
+Second, due to increased global conflict in Eastern Europe and the Middle East, the number of refugees entering Toronto has increased [@cbc23].On the other hand, the Toronto government has not been prepared to support such a huge increase of refugees as the portion of refugees in homeless people roared from less than 20% in the first three quarters of 2021 to nearly 60% at second quarter 2024. We observe an emergency for the government to increase its speed of helping these newly entered refugees and give them a job and a secure place to live. 
 
 Finally, we observe an increase in the proportion of people of working age. This indicates the need for the government to create more jobs for the people who need them to make a living, like people who are experiencing mental health problems or physical disabilities. 
 
