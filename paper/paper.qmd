@@ -24,11 +24,10 @@ library(opendatatoronto)
 library(knitr)
 
 # Read data
-raw_lead_data <- read_csv(here("inputs/data/raw_data.csv"))
-cleaned_data <- read_csv(here("outputs/data/analysis_data.csv"))
+raw_lead_data <- read_csv(here("data/raw_data.csv"))
+cleaned_data <- read_csv(here("data/analysis_data.csv"))
 ```
 
-\newpage
 
 # Introduction
 Homelessness is defined as "the situation of an individual, family or community without stable, safe, permanent, appropriate housing, or the immediate prospect, means and ability of acquiring it" [@canadianobservatory2012definition]. According to @gaetz2014state, approximately 23,500 Canadian people experience every type of homelessness every year. On SEP 12, 2024, there are still more than 9500 people staying in shelters in the city of Toronto [@toronto_shelter_census]. To address this ongoing crisis, the Toronto city government launched the supportive housing development plan, which aims to build more affordable housing for homeless people [@toronto2024affordable]. A recent two-year plan starting in 2022 aims to build 4,000 more affordable homes as well as supportive housing by the end of 2024 [@toronto2024affordable].
