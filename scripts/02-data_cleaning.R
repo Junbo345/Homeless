@@ -13,7 +13,7 @@
 library(tidyverse)
 
 #### Clean data ####
-raw_data <- read_csv("data/raw_data.csv")
+raw_data <- read_csv("data/raw_data/raw_data.csv")
 c
 cleaned_data <-
   raw_data |>
@@ -47,4 +47,4 @@ quarterly_data <- data %>%
 quarterly_data <- quarterly_data |> 
   filter(Quarter != '2024Q3')
 #### Save data ####
-write_csv(quarterly_data, "data/analysis_data.csv")
+write_csv(quarterly_data, "data/analysis_data/analysis_data.csv")

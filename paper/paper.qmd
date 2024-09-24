@@ -46,7 +46,7 @@ The data used here is downloaded from opendatatoronto [@citeOpenDataToronto]. Sp
 
 ## Cleaned Data
 
-We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, gender ratio: **male**, **female**, **transgender_non_binary_or_two_spirit**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata.
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata.
 
 ```{r}
 #| label: tbl-cleandata
@@ -56,7 +56,7 @@ We dropped the only missing row corresponding to July 2024. We then selected our
 cleaned_data |>
   slice(1:5) |>
   kable(
-    col.names = c("Time (Quaters)", "Subdivision", "Total people", "Female", "Male", "Other Gender",
+    col.names = c("Time (Quaters)", "Subdivision", "Total people",
                   "Early Career Stage", "Working Age", "Pre-retire and Retire"),
     digits = 0)
 
@@ -90,47 +90,6 @@ ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
 
 
 ```
-
-```{r}
-#| label: fig-gender
-#| echo: false
-#| fig-cap: "Proportion of Active Homeless Population by Gender Over Quarters"
-
-# Filter the data for 'All Population' group
-all_population_data <- subset(cleaned_data, population_group == 'All Population')
-
-# Calculate the proportion of each gender
-all_population_data <- all_population_data %>%
-  mutate(total = gender_female + gender_male + gender_transgender_non_binary_or_two_spirit,
-         female_proportion = gender_female / total,
-         male_proportion = gender_male / total,
-         transgender_proportion = gender_transgender_non_binary_or_two_spirit / total)
-
-# Reshape the data for plotting
-proportion_data_long <- all_population_data %>%
-  select(Quarter, female_proportion, male_proportion, transgender_proportion) %>%
-  gather(key = "Gender", value = "Proportion", -Quarter)
-
-# Rename gender categories for better readability
-proportion_data_long$Gender <- recode(proportion_data_long$Gender,
-                                      female_proportion = "Female",
-                                      male_proportion = "Male",
-                                      transgender_proportion = "Other")
-
-# Create the stacked bar graph
-ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Gender)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Quarters of a year",
-       y = "Proportion") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(legend.position = "bottom") +
-  scale_fill_manual(values = c("Female" = "pink", "Male" = "blue", "Other" = "purple"))
-
-```
-
-
-## Gender trend
-Next, we investigate the trend of gender ratio. We plot the proportion of male, female, and Other gender types against time in @fig-gender. Even though there is some fluctuation in the proportion of these three gender types, the overall trend is stable. The male proportion stays around 60% while the female proportion stays around 40% and others around 1%. 
 
 ## Chronic trend
 @fig-Chronic shows the trend of the proportion of chronic population among all homeless people over the quarters of each year. Here, according to [@chronic], chronic homelessness refers to "People who meet one of the two following criteria, as per the federal definition of chronic homelessness. The person has recorded a minimum of 180 overnight stays in the past year (365 days), or the person has recurrent overnight stays over the past three years with a cumulative duration of at least 546 nights." We can see from the graph that the proportion of chronic homeless increased a lot, from less than 35% in the first quarter of 2018 to more than 65% in the second quarter of 2024. 
