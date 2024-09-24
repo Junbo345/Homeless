@@ -24,8 +24,8 @@ library(opendatatoronto)
 library(knitr)
 
 # Read data
-raw_lead_data <- read_csv(here("data/raw_data.csv"))
-cleaned_data <- read_csv(here("data/analysis_data.csv"))
+raw_lead_data <- read_csv(here("data/raw_data/raw_data.csv"))
+cleaned_data <- read_csv(here("data/analysis_data/analysis_data.csv"))
 ```
 
 
