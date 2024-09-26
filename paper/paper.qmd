@@ -86,7 +86,7 @@ First, we plot a bar graph to show the trend of the size of the entire homeless 
 ```{r}
 #| label: fig-overall
 #| echo: false
-#| fig-cap: "Homeless Population Over Quarters"
+#| fig-cap: "Total homeless population in toronto, measured quarterly"
 
 # Filter the data for 'All Population' group
 all_population_data <- subset(cleaned_data, population_group == 'All Population')
@@ -107,7 +107,7 @@ ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
 ```{r}
 #| label: fig-Chronic
 #| echo: false
-#| fig-cap: "Proportion of Chronic population to Active Population by Quarter"
+#| fig-cap: "Proportion of chronic homeless population to toal homeless population in Toronto, measured quarterly"
 
 # Filter the data for 'All Population' and 'Chronic'
 all_population <- subset(cleaned_data, population_group == "All Population")
@@ -122,7 +122,7 @@ plot_data <- data.frame(Quarter = all_population$Quarter, Proportion = proportio
 # Create a bar graph
 ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
   geom_bar(stat = "identity", fill = "blue") +
-  labs(x = "Quarters", y = "Proportion of Chronic to Active Population") +
+  labs(x = "Quarters of a year", y = "Proportion of Chronic to Total Homeless Population") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 ## Age trend
@@ -130,7 +130,7 @@ ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
 ```{r}
 #| label: fig-WorkingAge
 #| echo: false
-#| fig-cap: "Proportion of working age population to Active Population by Quarter"
+#| fig-cap: "Proportion of working age population to to toal homeless population in Toronto, measured quarterly"
 
 # Filter the data for 'All Population' group
 all_population_data <- subset(cleaned_data, population_group == 'All Population')
@@ -170,7 +170,7 @@ ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)
 ```{r}
 #| label: fig-refugee
 #| echo: false
-#| fig-cap: "Proportion of Chronic population to Active Population by Quarter"
+#| fig-cap: "Proportion of Chronic population to to to toal homeless population in Toronto, measured quarterly"
 
 # Filter the data for 'All Population' and 'Chronic'
 all_population <- subset(cleaned_data, population_group == "All Population")
