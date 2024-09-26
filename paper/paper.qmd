@@ -34,7 +34,7 @@ Homelessness is defined as "the situation of an individual, family or community 
 
 While the city of Toronto has concentrated its efforts on building more affordable housing, our analysis in this paper has found that the underlying demographics of homeless populations changed significantly. This would indicate that the traditional housing-centric plan would no longer solve the newly evolved homeless problem.  
 
-In this paper, we delve into the demographic shift of Toronto's homeless population in greater detail by studying the monthly data from Toronto's shelter system from 2018 Jan to 2024 Jun [@toronto_shelter_data]. We start by outlining the data source, the way we accessed the data, as well as procedures we used to clean and prepare the data in analysis in **Data** section. Following this, in **Result** section, we draw the bar graph demonstrating the trend in demographic changes and present our key findings. Finally, in **Discussion** section, we analyze the implications of the trends we found and offer recommendations for policy changes that would closely address the needs of different demographic groups. 
+In this paper, we delve into the demographic shift of Toronto's homeless population in greater detail by studying the monthly data from Toronto's shelter system from 2018 Jan to 2024 Jun [@toronto_shelter_data]. We start by outlining the data source, the way we accessed the data, as well as procedures we used to clean and prepare the data in analysis in **Data** section. Following this, in **Result** section, we draw the bar graph demonstrating the trend in demographic changes and present our key findings. Finally, in **Discussion** section, we analyze the implications of the trends we found and offer recommendations for policy changes that would address the needs of different demographic groups. 
 
 
 
@@ -43,6 +43,16 @@ In this paper, we delve into the demographic shift of Toronto's homeless populat
 ## Raw data
 
 The data used here is downloaded from opendatatoronto [@citeOpenDataToronto]. Specifically, we used the Shelter System Flow Data released by the Toronto government [@toronto_shelter_data]. The data loading, cleaning, and analysis process is done by R [@citeR], together with packages including tidyverse [@tidy] here [@here], and knitr [@knitr]. This data tracks the number of people requiring shelter inside the city of Toronto from Jan 2018 until Jun 2024 monthly (variable named **actively_homeless**). Also, this data set provides detailed demographic breakdowns such as age group, refugee status, gender, and chronic status allowing us to deploy analysis into the change of composition of homeless people over time. While there are several other data sets including daily shelter occupancy in opendatatoronto, the lack of detailed demographic information makes them unsuitable for our study.
+
+The Variables that is of our interest are:
+
+**1. date(mmm-yy)**: The time period the data was published (month/year, eg. Jan-18 means January of year 2018).
+
+**2. population_group**: Each row represent different population groups, here we focus on all population, chronic, and refugee.
+
+**3. actively_homeless**: This is the total number of people who have used the shelter system at least one time in the past 3 months. We will use this as an estimate of the total number of homeless population.
+
+**4. ageunder16**, **age16-24**, **age25-34**, **age35-44**, **age45-54**, **age55-64**, **age65over**: These are the number of homeless individuals categorized by their age. 
 
 ## Cleaned Data
 
