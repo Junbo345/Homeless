@@ -22,6 +22,12 @@ set.seed(123)
 # Create a date sequence from 2018-Jan to 2024-Jan (monthly data)
 dates <- seq(as.Date("2018-01-01"), as.Date("2024-01-01"), by = "month")
 
+# Repeat each date 3 times
+repeated_dates <- rep(dates, each = 3)
+
+# Format the dates in "MMM-YY" format
+formatted_dates <- format(repeated_dates, "%b-%y")
+
 # Simulate the total population as a normally distributed random variable
 mean_population <- 10000
 sd_population <- 1000
@@ -30,27 +36,30 @@ total_population <- round(rnorm(length(dates), mean = mean_population, sd = sd_p
 # Ensure total population is positive
 total_population[total_population < 0] <- 0
 
-# Simulate working status components
-# These three categories should sum up to the total population
-pre_working <- round(total_population * runif(length(dates), min = 0.2, max = 0.4))
-working <- round(total_population * runif(length(dates), min = 0.4, max = 0.6))
-retirement <- total_population - pre_working - working
-
 # Simulate chronic cases (chronic number is below total population)
 chronic <- round(runif(length(dates), min = 0.01, max = 0.99) * total_population)
 
 # Simulate refugee cases (refugee number is below total population)
 refugee <- round(runif(length(dates), min = 0.01, max = 0.99) * total_population)
 
+# Combine the three columns into one long column alternately
+df <- data.frame(total_population, chronic, refugee)
+combined_population <- c(t(df))
+
+# Simulate working status components
+# These three categories should sum up to the total population
+pre_working <- round(combined_population * runif(length(dates)*3, min = 0.2, max = 0.4))
+working <- round(combined_population * runif(length(dates)*3, min = 0.4, max = 0.6))
+retirement <- combined_population - pre_working - working
+
 # Create a dataframe with all the data
 population_data <- data.frame(
-  Date = dates,
-  Total_Population = total_population,
-  Pre_Working = pre_working,
-  Working = working,
-  Retirement = retirement,
-  Chronic = chronic,
-  Refugee = refugee
+  "Date" = formatted_dates,
+  "Population_group" = rep(c("All Population", "Chronic", "Refugees"), times = length(dates)),
+  "actively_homeless" = combined_population,
+  "Pre_Working" = pre_working,
+  "Working" = working,
+  "Retirement" = retirement
 )
 
 # View the first few rows of the dataframe
@@ -80,6 +89,4 @@ if(test_sum_equals_total) {
 } else {
   print("Test 2 Failed: The sum of the working categories does not equal the total population.")
 }
-
-
 
