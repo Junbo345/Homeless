@@ -5,7 +5,7 @@ author:
 thanks: "Code and data are available at: https://github.com/Junbo345/Homeless."
 date: today
 date-format: long
-abstract: "Reducing homeless population in city of Toronto is an ongoing task. While the reduce method by the government stays the same, the demographic of the population varys in the past six years. In our paper, we analysis the demographic change of homless population and show that the traditional solution is no longer effective. We will then present new solutions of better adapt the on-going shift of demographics."
+abstract: "Reducing the homeless population in the City of Toronto is an ongoing task, and every year the city government struggles to address the different needs of homeless populations. In our paper, we analyze the demographic change of the homeless population in the past six years with data from Toronto's shelter system. We show that the proportion of chronic, refugees, and working-age all rose in the past six years. These findings indicate the city's current solution which focuses on building houses is no longer effective. We further propose new policies like improving public health systems to beat the latest crisis."
 format: pdf
 toc: true
 number-sections: true
@@ -53,6 +53,7 @@ We dropped the only missing row corresponding to July 2024. We then selected our
 #| echo: false
 #| tbl-cap: "cleaned dataset"
 
+# Give the summary table
 cleaned_data |>
   slice(1:5) |>
   kable(
