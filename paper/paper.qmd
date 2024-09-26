@@ -60,7 +60,7 @@ The Variables that is of our interest are:
 
 ## Cleaned Data
 
-We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata.
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata and summary statistics in @tbl-summary
 
 ```{r}
 #| label: tbl-cleandata
@@ -74,6 +74,33 @@ cleaned_data |>
     col.names = c("Time (Quaters)", "Subdivision", "Total people",
                   "Early Career Stage", "Working Age", "Pre-retire and Retire"),
     digits = 0)
+```
+
+```{r}
+#| label: tbl-summary
+#| echo: false
+#| tbl-cap: "summary statistics of cleaned data"
+
+# Group by Subdivision and calculate summary statistics
+summary_statistics <- cleaned_data %>%
+  group_by(population_group) %>%
+  summarize(
+    Mean_Total_people = mean(actively_homeless, na.rm = TRUE),
+    Mean_Early_Career_Stage = mean(Early_Career_Stage, na.rm = TRUE),
+    Mean_Working_Age = mean(Working_Age, na.rm = TRUE),
+    Mean_Pre_Retire_and_Retire = mean(Pre_Retirement_and_Retirement_Age, na.rm = TRUE)
+  )
+
+# Display the summary statistics using kable
+summary_statistics |>
+  kable(
+    col.names = c("Subdivision", "Mean Total People", 
+                  "Mean Early Career Stage", 
+                  "Mean Working Age", 
+                  "Mean Pre-retire and Retire"
+  ),
+    digits = 2
+  )
 
 
 
