@@ -77,9 +77,9 @@ cleaned_data |>
 
 
 
-# Results {#sec-results}
+## Results
 
-## Overall trend
+### Overall trend
 
 First, we plot a bar graph to show the trend of the size of the entire homeless population of homeless people over the past time. In @fig-overall, we observe a slight increase in the total number of homeless people from the first quarter of 2018 to the second quarter of 2024, while in between there is a decrease of the homeless population in late 2020 to early 2021, followed by a rapid increase. 
 
@@ -102,7 +102,7 @@ ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
 
 ```
 
-## Chronic trend
+### Chronic trend
 @fig-Chronic shows the trend of the proportion of chronic population among all homeless people over the quarters of each year. Here, according to [@chronic], chronic homelessness refers to "People who meet one of the two following criteria, as per the federal definition of chronic homelessness. The person has recorded a minimum of 180 overnight stays in the past year (365 days), or the person has recurrent overnight stays over the past three years with a cumulative duration of at least 546 nights." We can see from the graph that the proportion of chronic homeless increased a lot, from less than 35% in the first quarter of 2018 to more than 65% in the second quarter of 2024. 
 ```{r}
 #| label: fig-Chronic
@@ -125,7 +125,7 @@ ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
   labs(x = "Quarters of a year", y = "Proportion of Chronic to Total Homeless Population") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-## Age trend
+### Age trend
 @fig-WorkingAge displays the trend of the proportion of different working age statuses among the actively homeless population over the quarters of each year. Here, the working age statuses are categorized into three groups: Early Career Stage, Working Age, and Pre-Retirement and Retirement Age. Even though the trend is not dramatic, We can see from the graph that the proportion of the Early Career Stage population as well as pre-retire and retired has decreased (from 29% and 33% separately in the first quarter of 2018 to 25% and 28% in the second quarter in 2024). On the other hand, the working age proportion increased to 47% in 2024Q2 from 37% in 2018Q1. This indicates the growing population who are in the working age cannot afford their housing. 
 ```{r}
 #| label: fig-WorkingAge
@@ -165,7 +165,7 @@ ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)
                                "Pre-Retirement and Retirement Age" = "green"))
 ```
 
-## Refugee trend
+### Refugee trend
 @fig-refugee shows the trend of the proportion of refugees among the actively homeless population over the quarters of each year. We observe a significant decrease in the proportion of individuals with refugee status from 35% in 2019 to less than 20% in 2021. However, starting in the year 2022, the proportion surged to nearly 60% in the second quarter of 2024. 
 ```{r}
 #| label: fig-refugee

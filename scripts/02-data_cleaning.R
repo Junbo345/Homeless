@@ -24,8 +24,7 @@ cleaned_data1 <- cleaned_data |>
     Early_Career_Stage = ageunder16 + age16_24) |>
   mutate(Working_Age = age25_34 + age35_44) |>
   mutate(Pre_Retirement_and_Retirement_Age = age45_54 + age55_64 + age65over) |>
-  select(date_mmm_yy, population_group, actively_homeless, 
-         gender_female, gender_male, gender_transgender_non_binary_or_two_spirit,
+  select(date_mmm_yy, population_group, actively_homeless,
          Early_Career_Stage, Working_Age, Pre_Retirement_and_Retirement_Age) |>
   filter(population_group == "All Population" | population_group == "Chronic" |
            population_group == "Refugees") |>
