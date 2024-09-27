@@ -323,6 +323,306 @@ Explanation:
 You can run this code to verify that the generated data meets both conditions. If the conditions hold true, you'll get a message that both tests passed.
 4o
 
+User:
+add a title for this papaer: ---
+title: "My title"
+author: 
+  - Junbo Li
+thanks: "Code and data are available at: https://github.com/Junbo345/Homeless."
+date: today
+date-format: long
+abstract: "Reducing homeless population in city of Toronto is an ongoing task. While the reduce method by the government stays the same, the demographic of the population varys in the past six years. In our paper, we analysis the demographic change of homless population and show that the traditional solution is no longer effective. We will then present new solutions of better adapt the on-going shift of demographics."
+format: pdf
+toc: true
+number-sections: true
+bibliography: references.bib
+---
+
+{r}
+#| include: false
+#| warning: false
+#| message: false
+
+#### Package setup ####
+library(here)
+library(tidyverse)
+library(opendatatoronto)
+library(knitr)
+
+# Read data
+raw_lead_data <- read_csv(here("inputs/data/raw_data.csv"))
+cleaned_data <- read_csv(here("outputs/data/analysis_data.csv"))
+
+
+\newpage
+
+# Introduction
+Homelessness is defined as "the situation of an individual, family or community without stable, safe, permanent, appropriate housing, or the immediate prospect, means and ability of acquiring it" [@canadianobservatory2012definition]. According to @gaetz2014state, approximately 23,500 Canadian people experience every type of homelessness every year. On SEP 12, 2024, there are still more than 9500 people staying in shelters in the city of Toronto [@toronto_shelter_census]. To address this ongoing crisis, the Toronto city government launched the supportive housing development plan, which aims to build more affordable housing for homeless people [@toronto2024affordable]. A recent two-year plan starting in 2022 aims to build 4,000 more affordable homes as well as supportive housing by the end of 2024 [@toronto2024affordable].
+
+While the city of Toronto has concentrated its efforts on building more affordable housing, our analysis in this paper has found that the underlying demographics of homeless populations changed significantly. This would indicate that the traditional housing-centric plan would no longer solve the newly evolved homeless problem.  
+
+In this paper, we delve into the demographic shift of Toronto's homeless population in greater detail by studying the monthly data from Toronto's shelter system from 2018 Jan to 2024 Jun [@toronto_shelter_data]. We start by outlining the data source, the way we accessed the data, as well as procedures we used to clean and prepare the data in analysis in **Data** section. Following this, in **Result** section, we draw the bar graph demonstrating the trend in demographic changes and present our key findings. Finally, in **Discussion** section, we analyze the implications of the trends we found and offer recommendations for policy changes that would closely address the needs of different demographic groups. 
+
+
+
+# Data {#sec-data}
+
+## Raw data
+
+The data used here is downloaded from opendatatoronto [@citeOpenDataToronto]. Specifically, we used the Shelter System Flow Data released by the Toronto government [@toronto_shelter_data]. The data loading, cleaning, and analysis process is done by R [@citeR], together with packages including tidyverse [@tidy] here [@here], and knitr [@knitr]. This data tracks the number of people requiring shelter inside the city of Toronto from Jan 2018 until Jun 2024 monthly (variable named **actively_homeless**). Also, this data set provides detailed demographic breakdowns such as age group, refugee status, gender, and chronic status allowing us to deploy analysis into the change of composition of homeless people over time. While there are several other data sets including daily shelter occupancy in opendatatoronto, the lack of detailed demographic information makes them unsuitable for our study.
+
+## Cleaned Data
+
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, gender ratio: **male**, **female**, **transgender_non_binary_or_two_spirit**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata.
+
+{r}
+#| label: tbl-cleandata
+#| echo: false
+#| tbl-cap: "cleaned dataset"
+
+cleaned_data |>
+  slice(1:5) |>
+  kable(
+    col.names = c("Time (Quaters)", "Subdivision", "Total people", "Female", "Male", "Other Gender",
+                  "Early Career Stage", "Working Age", "Pre-retire and Retire"),
+    digits = 0)
+
+
+
+
+# Results {#sec-results}
+
+## Overall trend
+
+First, we plot a bar graph to show the trend of the size of the entire homeless population of homeless people over the past time. In @fig-overall, we observe a slight increase in the total number of homeless people from the first quarter of 2018 to the second quarter of 2024, while in between there is a decrease of the homeless population in late 2020 to early 2021, followed by a rapid increase. 
+
+{r}
+#| label: fig-overall
+#| echo: false
+#| fig-cap: "Homeless Population Over Quarters"
+
+# Filter the data for 'All Population' group
+all_population_data <- subset(cleaned_data, population_group == 'All Population')
+
+# Create the bar graph
+ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(x = "Quarters of a year",
+       y = "Total number of homeless people") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+{r}
+#| label: fig-gender
+#| echo: false
+#| fig-cap: "Proportion of Active Homeless Population by Gender Over Quarters"
+
+# Filter the data for 'All Population' group
+all_population_data <- subset(cleaned_data, population_group == 'All Population')
+
+# Calculate the proportion of each gender
+all_population_data <- all_population_data %>%
+  mutate(total = gender_female + gender_male + gender_transgender_non_binary_or_two_spirit,
+         female_proportion = gender_female / total,
+         male_proportion = gender_male / total,
+         transgender_proportion = gender_transgender_non_binary_or_two_spirit / total)
+
+# Reshape the data for plotting
+proportion_data_long <- all_population_data %>%
+  select(Quarter, female_proportion, male_proportion, transgender_proportion) %>%
+  gather(key = "Gender", value = "Proportion", -Quarter)
+
+# Rename gender categories for better readability
+proportion_data_long$Gender <- recode(proportion_data_long$Gender,
+                                      female_proportion = "Female",
+                                      male_proportion = "Male",
+                                      transgender_proportion = "Other")
+
+# Create the stacked bar graph
+ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Gender)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "bottom") +
+  scale_fill_manual(values = c("Female" = "pink", "Male" = "blue", "Other" = "purple"))
+
+
+
+## Gender trend
+Next, we investigate the trend of gender ratio. We plot the proportion of male, female, and Other gender types against time in @fig-gender. Even though there is some fluctuation in the proportion of these three gender types, the overall trend is stable. The male proportion stays around 60% while the female proportion stays around 40% and others around 1%. 
+
+## Chronic trend
+@fig-Chronic shows the trend of the proportion of chronic population among all homeless people over the quarters of each year. Here, according to [@chronic], chronic homelessness refers to "People who meet one of the two following criteria, as per the federal definition of chronic homelessness. The person has recorded a minimum of 180 overnight stays in the past year (365 days), or the person has recurrent overnight stays over the past three years with a cumulative duration of at least 546 nights." We can see from the graph that the proportion of chronic homeless increased a lot, from less than 35% in the first quarter of 2018 to more than 65% in the second quarter of 2024. 
+{r}
+#| label: fig-Chronic
+#| echo: false
+#| fig-cap: "Proportion of Chronic population to Active Population by Quarter"
+
+# Filter the data for 'All Population' and 'Chronic'
+all_population <- subset(cleaned_data, population_group == "All Population")
+chronic_population <- subset(cleaned_data, population_group == "Chronic")
+
+# Calculate the proportion of chronic to active population
+proportion <- chronic_population$actively_homeless / all_population$actively_homeless
+
+# Create a data frame for plotting
+plot_data <- data.frame(Quarter = all_population$Quarter, Proportion = proportion)
+
+# Create a bar graph
+ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(x = "Quarters", y = "Proportion of Chronic to Active Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+## Age trend
+@fig-WorkingAge displays the trend of the proportion of different working age statuses among the actively homeless population over the quarters of each year. Here, the working age statuses are categorized into three groups: Early Career Stage, Working Age, and Pre-Retirement and Retirement Age. Even though the trend is not dramatic, We can see from the graph that the proportion of the Early Career Stage population as well as pre-retire and retired has decreased (from 29% and 33% separately in the first quarter of 2018 to 25% and 28% in the second quarter in 2024). On the other hand, the working age proportion increased to 47% in 2024Q2 from 37% in 2018Q1. This indicates the growing population who are in the working age cannot afford their housing. 
+{r}
+#| label: fig-WorkingAge
+#| echo: false
+#| fig-cap: "Proportion of working age population to Active Population by Quarter"
+
+# Filter the data for 'All Population' group
+all_population_data <- subset(cleaned_data, population_group == 'All Population')
+
+# Calculate the proportion of each working age status
+all_population_data <- all_population_data %>%
+  mutate(total = Early_Career_Stage + Working_Age + Pre_Retirement_and_Retirement_Age,
+         early_career_proportion = Early_Career_Stage / total,
+         working_age_proportion = Working_Age / total,
+         pre_retirement_proportion = Pre_Retirement_and_Retirement_Age / total)
+
+# Reshape the data for plotting
+proportion_data_long <- all_population_data %>%
+  select(Quarter, early_career_proportion, working_age_proportion, pre_retirement_proportion) %>%
+  gather(key = "Age_Status", value = "Proportion", -Quarter)
+
+# Rename age status categories for better readability
+proportion_data_long$Age_Status <- recode(proportion_data_long$Age_Status,
+                                          early_career_proportion = "Early Career Stage",
+                                          working_age_proportion = "Working Age",
+                                          pre_retirement_proportion = "Pre-Retirement and Retirement Age")
+
+# Create the stacked bar graph
+ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "bottom") +
+  scale_fill_manual(values = c("Early Career Stage" = "blue", 
+                               "Working Age" = "pink", 
+                               "Pre-Retirement and Retirement Age" = "green"))
+
+
+## Refugee trend
+@fig-refugee shows the trend of the proportion of refugees among the actively homeless population over the quarters of each year. We observe a significant decrease in the proportion of individuals with refugee status from 35% in 2019 to less than 20% in 2021. However, starting in the year 2022, the proportion surged to nearly 60% in the second quarter of 2024. 
+{r}
+#| label: fig-refugee
+#| echo: false
+#| fig-cap: "Proportion of Chronic population to Active Population by Quarter"
+
+# Filter the data for 'All Population' and 'Chronic'
+all_population <- subset(cleaned_data, population_group == "All Population")
+refu_population <- subset(cleaned_data, population_group == "Refugees")
+
+# Calculate the proportion of chronic to active population
+proportion <- refu_population$actively_homeless / all_population$actively_homeless
+
+# Create a data frame for plotting
+plot_data <- data.frame(Quarter = all_population$Quarter, Proportion = proportion)
+
+# Create a bar graph
+ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(x = "Quarters", y = "Proportion of Refugee to Active Population") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+# Discussion
+Based on the analysis of the results section, we observe that, even though the overall homeless population has remained relatively stable over the past six years, its demographics have shifted. Specifically, the proportion of refugees, chronically homeless individuals as well as working-aged people among all homeless populations have increased. Starting at 2020, the City of Toronto has devoted its efforts to reducing the number of homeless people primarily through building more affordable houses [@torontosol]. However, our study suggests that with these changes in demographics, the city government should expand its focus to address homelessness more effectively. 
+
+First, as the result section points out, the proportion of the chronically homeless population nearly doubled in the past six years. Despite its nature of long-lasting homeless status, studies have also shown that chronic homelessness is closely associated with chronic illness or other mental issues @chronic. Research further indicates that the average income of people experiencing mental illness and different types of disorders is significantly lower than normal people's income @Sareen2011. This makes it particularly difficult for people who have already experienced health problems to escape homelessness. In addition, homelessness exacerbates health problems due to lack of adequate food, discrimination, barriers to health care, etc. [@Sleet2021]. A combination of these would become a harmful cycle: illness leads to a decrease in income, which leads to becoming homeless, which would further worsen individual illness. 
+
+To break the harmful cycle, the city government should give more attention to public health care systems, especially for low-income and homeless populations. In fact, merely building houses only increased the proportion of chronically homeless populations [@house_not]. The city should, instead, shift to building supportive housing, where health services as well as social support are integrated with affordable housing. Mobile outreach teams and community-based mental health clinics can also ensure that homeless individuals receive the care they need.
+
+Second, due to increased global conflict in Eastern Europe and the Middle East, the number of refugees entering Toronto has increased [@cbc23].On the other hand, the city government has not been prepared to support such a huge increase of refugees as the portion of refugees homeless people roared from less than 20% in the first three quarters of 2021 to nearly 60% in the second quarter of 2024. We observed an emergency for the government to increase its speed in helping these newly entered refugees adapt to the new environment and give them a livable income job to support their housing. 
+
+Finally, we observe an increase in the proportion of people of working age. This indicates the need for the government to create more jobs for the low-income and homeless population, particularly for those with mental health issues or physical disabilities who rely on employment to sustain themselves.  
+
+
+## Weaknesses and next steps
+
+Even though our data is the most up-to-date and accurate data available for the homeless population on Opendatatoronto, it may still have a bias toward the estimation of the true homeless population in the city of Toronto. For example, people would not stay in the shelter every day and they would enter and exit the shelter frequently [@toronto_shelter_data]. Accurately measuring the true population demographic is a very difficult topic even in Canada, but the shelter flow data would provide a proper estimate of our research interest [@dionne2023review]. To understand the problems better and develop more strategies, the next steps would be to research sampling methods that could reach out and survey the population that is difficult to contact such as the unsheltered homeless population. More incorporative sampling strategies would provide us better understanding of homeless demographics and develop further sophisticated plans to reduce homelessness.    
+
+\newpage
+
+
+# References
+
+ChatGPT:
+The title and metadata you provided for the paper look well-formatted. Here's your full header along with the additional tests in R:
+
+yaml
+---
+title: "Demographic Shifts in Toronto's Homeless Population: Evaluating and Reassessing City Solutions"
+author: 
+  - Junbo Li
+thanks: "Code and data are available at: https://github.com/Junbo345/Homeless."
+date: today
+date-format: long
+abstract: "Reducing the homeless population in the city of Toronto is an ongoing task. While the government's reduction methods have stayed the same, the demographics of the homeless population have varied over the past six years. In this paper, we analyze the demographic changes of the homeless population and demonstrate that traditional solutions are no longer as effective. We propose new approaches to better adapt to the ongoing demographic shifts."
+format: pdf
+toc: true
+number-sections: true
+bibliography: references.bib
+---
+
+Here's where you would add the tests inside your R code:
+
+r
+#| include: false
+#| warning: false
+#| message: false
+
+#### Package setup ####
+library(here)
+library(tidyverse)
+library(opendatatoronto)
+library(knitr)
+
+# Read data
+raw_lead_data <- read_csv(here("inputs/data/raw_data.csv"))
+cleaned_data <- read_csv(here("outputs/data/analysis_data.csv"))
+
+# Tests
+# Test 1: Ensure all entries are greater than 0
+test_greater_than_zero <- all(cleaned_data$actively_homeless > 0) &
+                          all(cleaned_data$Pre_Working >= 0) &
+                          all(cleaned_data$Working >= 0) &
+                          all(cleaned_data$Retirement >= 0) &
+                          all(cleaned_data$Chronic >= 0) &
+                          all(cleaned_data$Refugee >= 0)
+
+if(test_greater_than_zero) {
+  print("Test 1 Passed: All entries are greater than or equal to 0.")
+} else {
+  print("Test 1 Failed: Some entries are less than 0.")
+}
+
+# Test 2: Ensure the sum of Pre-working, Working, and Retirement equals the Total Population
+test_sum_equals_total <- all(cleaned_data$Pre_Working + 
+                             cleaned_data$Working + 
+                             cleaned_data$Retirement == cleaned_data$actively_homeless)
+
+if(test_sum_equals_total) {
+  print("Test 2 Passed: The sum of Pre-working, Working, and Retirement equals the total population.")
+} else {
+  print("Test 2 Failed: The sum of the working categories does not equal the total population.")
+}
+With this, you should be able to validate that your data conforms to the conditions you set. If everything passes, your demographic analysis should proceed smoothly.
+
 
 LLM: ChatGPT-4/ Co-polit
 Date: 26 SEP 2024
