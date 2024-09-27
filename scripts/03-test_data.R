@@ -15,12 +15,12 @@ library(tidyverse)
 #### Test data ####
 data <- read.csv("data/analysis_data/analysis_data.csv")
 
-#Test 1: Ensure all cells are non-empty
+# Test 1: Ensure all cells are non-empty
 # Function to check if any cell in the data frame is empty (NA or "")
 check_empty_cells <- function(df) {
   # Check for NA values
   has_na <- any(is.na(df))
-  
+
   # Check for empty strings in character columns
   has_empty_strings <- any(sapply(df, function(x) {
     if (is.character(x)) {
@@ -29,7 +29,7 @@ check_empty_cells <- function(df) {
       FALSE
     }
   }))
-  
+
   # Return TRUE if either NA or empty strings are found
   return(has_na || has_empty_strings)
 }
@@ -44,18 +44,18 @@ if (check_empty_cells(data)) {
 
 
 # Test 2: Ensure the sum of Pre-working, Working, and Retirement equals the Total Population
-test_sum_equals_total <- all(round(data$Early_Career_Stage + 
-                               data$Working_Age + 
-                               data$Pre_Retirement_and_Retirement_Age) == round(data$actively_homeless))
+test_sum_equals_total <- all(round(data$Early_Career_Stage +
+  data$Working_Age +
+  data$Pre_Retirement_and_Retirement_Age) == round(data$actively_homeless))
 
-if(test_sum_equals_total) {
+if (test_sum_equals_total) {
   print("Test 2 Passed: The sum of Pre-working, Working, and Retirement equals the Total Population.")
 } else {
   print("Test 2 Failed: The sum of the working categories does not equal the total population.")
 }
 
 
-#Test 3: Ensure all numerical cells are greater than 0 
+# Test 3: Ensure all numerical cells are greater than 0
 # Function to check if all numerical columns have values greater than 0
 test_numerical_gt_zero <- function(df) {
   # Apply the condition only to numeric columns
