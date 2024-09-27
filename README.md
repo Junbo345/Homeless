@@ -17,6 +17,6 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of Chat-GPT and co-poliot. Detailed chat history could be found in other/llm/usage.txt
+The R code were written with the help of Chat-GPT and Co-Pilot.The paper and data analysis is also written with the help of Chat-GPT and Co-Pilot Detailed chat history could be found in other/llm/usage.txt.
 
 
