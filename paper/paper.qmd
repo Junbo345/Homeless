@@ -60,7 +60,7 @@ The Variables that is of our interest are:
 
 ## Cleaned Data
 
-We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month (**actively_homeless**), as well as **refugee** and **chronic status** in the column population. In addition, we categorized age groups based on their suitability for work: transforming ages under 24 for the **early career stage**, ages between 25 and 54 for **working age**, and ages above 55 for **pre-retirement and retirement age**. The classification of ages 25-54 as working age is aligned with the Canadian government's survey, which defines individuals aged 25-54 as core-aged workers [@statcan2024]. Finally, we replaced the monthly data with averaged quarterly data for better analysis and visualization over a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata, and summary statistics in @tbl-summary.
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month (**actively_homeless**), as well as **refugee** and **chronic status** in the column population. In addition, we categorized age groups based on their suitability for work: transforming ages under 24 for the **early career stage**, ages between 25 and 54 for **working age**, and ages above 55 for **pre-retirement and retirement age**. The classification of ages 25-54 as working age is aligned with the Canadian government's survey, which defines individuals aged 25-54 as core-aged workers [@statcan2024]. Finally, we replaced the monthly data with averaged quarterly data for better analysis and visualization over a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata, and the means of each variable are in @tbl-summary.
 
 ```{r}
 #| label: tbl-cleandata
@@ -109,7 +109,7 @@ summary_statistics |>
 
 
 
-## Results
+## Demographic trend with respect to time
 
 ### Overall trend
 
