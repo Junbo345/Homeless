@@ -46,7 +46,7 @@ The data for this analysis was sourced from opendatatoronto [@citeOpenDataToront
 
 Updated monthly, the dataset is published on the 15th of each month, with revisions made to the previous month's data to enhance discharge accuracy. However, it currently excludes individuals sleeping outdoors or those utilizing services not funded by the City, omitting an estimated 18% of the homeless population. The dataset provides detailed demographic information such as age group, refugee status, gender, and chronic status, enabling us to analyze changes in the homeless population's composition over time.
 
-While other datasets, such as daily shelter occupancy, are available, they lack the demographic depth necessary for this study. Data loading, cleaning, and analysis were carried out in R [@citeR], utilizing packages like tidyverse [@tidy], here [@here], and knitr [@knitr]. This comprehensive approach ensures that our analysis accurately reflects the realities faced by individuals experiencing homelessness in Toronto.
+While other datasets, such as daily shelter occupancy, are available, they lack the demographic depth necessary for this study. Data loading, cleaning, and analysis were carried out in **R** [@citeR], with packages **tidyverse** [@tidy], **here** [@here], **styler** [@style], and **knitr** [@knitr]. This comprehensive approach ensures that our analysis accurately reflects the realities faced by individuals experiencing homelessness in Toronto.
 
 The Variables that is of our interest are:
 
