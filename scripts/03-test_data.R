@@ -44,9 +44,9 @@ if (check_empty_cells(data)) {
 
 
 # Test 2: Ensure the sum of Pre-working, Working, and Retirement equals the Total Population
-test_sum_equals_total <- all(data$Early_Career_Stage + 
+test_sum_equals_total <- all(round(data$Early_Career_Stage + 
                                data$Working_Age + 
-                               data$Pre_Retirement_and_Retirement_Age == data$actively_homeless)
+                               data$Pre_Retirement_and_Retirement_Age) == round(data$actively_homeless))
 
 if(test_sum_equals_total) {
   print("Test 2 Passed: The sum of Pre-working, Working, and Retirement equals the Total Population.")

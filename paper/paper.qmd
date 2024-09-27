@@ -60,7 +60,7 @@ The Variables that is of our interest are:
 
 ## Cleaned Data
 
-We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata and summary statistics in @tbl-summary
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month (**actively_homeless**), as well as **refugee** and **chronic status** in the column population. In addition, we categorized age groups based on their suitability for work: transforming ages under 24 for the **early career stage**, ages between 25 and 54 for **working age**, and ages above 55 for **pre-retirement and retirement age**. The classification of ages 25-54 as working age is aligned with the Canadian government's survey, which defines individuals aged 25-54 as core-aged workers @statcan2024. Finally, we replaced the monthly data with averaged quarterly data for better analysis and visualization over a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata, and summary statistics in @tbl-summary.
 
 ```{r}
 #| label: tbl-cleandata
@@ -117,7 +117,7 @@ First, we plot a bar graph to show the trend of the size of the entire homeless 
 ```{r}
 #| label: fig-overall
 #| echo: false
-#| fig-cap: "Total homeless population in toronto, measured quarterly"
+#| fig-cap: ""
 
 # Filter the data for 'All Population' group
 all_population_data <- subset(cleaned_data, population_group == 'All Population')
@@ -126,7 +126,8 @@ all_population_data <- subset(cleaned_data, population_group == 'All Population'
 ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   labs(x = "Quarters of a year",
-       y = "Total number of homeless people") +
+       y = "Total number of homeless people", 
+       title = "Total homeless population in toronto, measured quarterly") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
@@ -138,7 +139,7 @@ ggplot(all_population_data, aes(x = Quarter, y = actively_homeless)) +
 ```{r}
 #| label: fig-Chronic
 #| echo: false
-#| fig-cap: "Proportion of chronic homeless population to toal homeless population in Toronto, measured quarterly"
+#| fig-cap: ""
 
 # Filter the data for 'All Population' and 'Chronic'
 all_population <- subset(cleaned_data, population_group == "All Population")
@@ -153,15 +154,16 @@ plot_data <- data.frame(Quarter = all_population$Quarter, Proportion = proportio
 # Create a bar graph
 ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
   geom_bar(stat = "identity", fill = "blue") +
-  labs(x = "Quarters of a year", y = "Proportion of Chronic to Total Homeless Population") +
+  labs(x = "Quarters of a year", y = "Proportion",
+       title = "Proportion of chronic homeless population to toal homeless\npopulation in Toronto, measured quarterly") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 ### Age trend
-@fig-WorkingAge displays the trend of the proportion of different working age statuses among the actively homeless population over the quarters of each year. Here, the working age statuses are categorized into three groups: Early Career Stage, Working Age, and Pre-Retirement and Retirement Age. Even though the trend is not dramatic, We can see from the graph that the proportion of the Early Career Stage population as well as pre-retire and retired has decreased (from 29% and 33% separately in the first quarter of 2018 to 25% and 28% in the second quarter in 2024). On the other hand, the working age proportion increased to 47% in 2024Q2 from 37% in 2018Q1. This indicates the growing population who are in the working age cannot afford their housing. 
+@fig-WorkingAge displays the trend of the proportion of different working age statuses among the actively homeless population over the quarters of each year. Here, the working age statuses are categorized into three groups: Early Career Stage, Working Age, and Pre-Retirement and Retirement Age. Even though the trend is not dramatic, We can see from the graph that the proportion of the Early Career Stage population as well as pre-retire and retired has decreased (from 29% and 17% separately in the first quarter of 2018 to 24.5% and 14.5% in the second quarter in 2024). On the other hand, the working age proportion increased to 61% in 2024Q2 from 54% in 2018Q1. This indicates the growing population who are in the working age cannot afford their housing. 
 ```{r}
 #| label: fig-WorkingAge
 #| echo: false
-#| fig-cap: "Proportion of working age population to to toal homeless population in Toronto, measured quarterly"
+#| fig-cap: ""
 
 # Filter the data for 'All Population' group
 all_population_data <- subset(cleaned_data, population_group == 'All Population')
@@ -188,9 +190,11 @@ proportion_data_long$Age_Status <- recode(proportion_data_long$Age_Status,
 ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
   geom_bar(stat = "identity") +
   labs(x = "Quarters of a year",
-       y = "Proportion") +
+       y = "Proportion",
+       title = "Proportion of working age population to to toal homeless\npopulation in Toronto, measured quarterly") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 6)) +
   scale_fill_manual(values = c("Early Career Stage" = "blue", 
                                "Working Age" = "pink", 
                                "Pre-Retirement and Retirement Age" = "green"))
@@ -201,7 +205,7 @@ ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)
 ```{r}
 #| label: fig-refugee
 #| echo: false
-#| fig-cap: "Proportion of Chronic population to to to toal homeless population in Toronto, measured quarterly"
+#| fig-cap: ""
 
 # Filter the data for 'All Population' and 'Chronic'
 all_population <- subset(cleaned_data, population_group == "All Population")
@@ -216,7 +220,8 @@ plot_data <- data.frame(Quarter = all_population$Quarter, Proportion = proportio
 # Create a bar graph
 ggplot(plot_data, aes(x = Quarter, y = Proportion)) +
   geom_bar(stat = "identity", fill = "blue") +
-  labs(x = "Quarters", y = "Proportion of Refugee to Active Population") +
+  labs(x = "Quarters", y = "Proportion",
+       title = "Proportion of Chronic population to to to toal homeless\npopulation in Toronto, measured quarterly") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
