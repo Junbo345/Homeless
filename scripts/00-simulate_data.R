@@ -65,7 +65,7 @@ population_data <- data.frame(
   "Retirement" = retirement
 )
 
-write_csv(population_data, "data/raw_data/simulated_data.csv")
+write_csv(population_data, "data/simulated_data/simulated_data.csv")
 
 
 # Tests
