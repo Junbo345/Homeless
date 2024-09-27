@@ -1535,3 +1535,151 @@ kable(): Creates a neatly formatted table to display the summary statistics.
 Notes:
 Ensure that the variables used in the mean(), sd(), min(), and max() functions are correctly named as per your dataset.
 Adjust the variable names (Early_Career_Stage, Working_Age, Pre_Retire_and_Retire) to match those in your cleaned_data dataset if they differ.
+
+
+User:
+cite this in .bib style of R: https://www150.statcan.gc.ca/n1/daily-quotidien/240105/dq240105a-eng.htm
+
+Co-pilot:
+Sure, here's how you can cite that source in .bib style for R:
+
+```bibtex
+@misc{statcan2024,
+  author       = {Statistics Canada},
+  title        = {Labour Force Survey, December 2023},
+  year         = 2024,
+  url          = {https://www150.statcan.gc.ca/n1/daily-quotidien/240105/dq240105a-eng.htm},
+  note         = {Accessed: 2024-09-27}
+}
+```
+
+Feel free to adjust any details as needed! If you have any other questions or need further assistance, just let me know.
+
+User:
+Here is the para describing the data tansformation process, add that age transformation to working age is justified by the canadian gov's survey where they used people form age 25-54 as core-aged man: We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month **actively_homeless**, as well as refugee and chronic status in column **population**. In addition, we categorize age groups by whether they are suitable for work: transform age under 24 for **early career stage**, age between 25 and 44 for **working age**, and age above 45 for **pre-retirement and retirement age**. Finally, we replace the monthly data with averaged quarterly data for better analysis and visualization of a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata and summary statistics in @tbl-summary
+
+
+ChatGPT:
+Here’s the revised paragraph with the justification for the "working age" transformation:
+
+We dropped the only missing row corresponding to July 2024. We then selected our columns of interest, namely, the total number of homeless people every month (actively_homeless), as well as refugee and chronic status in the column population. In addition, we categorized age groups based on their suitability for work: transforming ages under 24 for the early career stage, ages between 25 and 44 for working age, and ages above 45 for pre-retirement and retirement age. The classification of ages 25-44 as working age is aligned with the Canadian government's survey, which defines individuals aged 25-54 as core-aged workers. Finally, we replaced the monthly data with averaged quarterly data for better analysis and visualization over a prolonged period. A sample of cleaned data can be seen in @tbl-cleandata, and summary statistics in @tbl-summary.
+
+This incorporates the justification for the working-age group based on Canadian government standards.
+
+
+
+
+
+
+User：
+Round to nearst integer in R
+
+ChatGPT:
+In R, you can use the round() function to round numbers to the nearest integer. Here's how you can use it:
+
+Example:
+r
+# Rounding a single number
+rounded_value <- round(3.75)
+print(rounded_value)  # Output will be 4
+
+# Rounding a vector of numbers
+numbers <- c(3.2, 4.7, 5.5)
+rounded_numbers <- round(numbers)
+print(rounded_numbers)  # Output will be 3, 5, 6
+By default, round() rounds to the nearest integer, but you can specify the number of decimal places if needed by adding a second argument. For example:
+
+r
+round(3.14159, 2)  # Output: 3.14 (rounded to 2 decimal places)
+In your case, if you want to round the numbers in a data frame to the nearest integer, you can apply round() to the appropriate columns. Here's how you could round all numeric columns in a data frame:
+
+r
+# Assuming 'df' is your data frame
+df_rounded <- df %>%
+  mutate(across(where(is.numeric), round))
+This will round all numeric columns in the data frame to the nearest integer.
+
+
+
+
+
+
+User:
+reduce the size of legends when generating the plot: ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "bottom") +
+  scale_fill_manual(values = c("Early Career Stage" = "blue", 
+                               "Working Age" = "pink", 
+                               "Pre-Retirement and Retirement Age" = "green"))
+
+ChatGPT:
+You can reduce the size of the legend in your ggplot2 plot by adjusting the legend.text element in the theme() function. Here's how you can modify your code to reduce the size of the legends:
+
+r
+ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8)) +  # Adjust the size here
+  scale_fill_manual(values = c("Early Career Stage" = "blue", 
+                               "Working Age" = "pink", 
+                               "Pre-Retirement and Retirement Age" = "green"))
+In this example, legend.text = element_text(size = 8) reduces the font size of the legend text. You can adjust the size value as needed to achieve your desired legend size.
+
+
+
+
+
+
+User：
+add title
+
+ChatGPT:
+To add a title to your plot, you can include the ggtitle() function. Here's how to update your code with a title:
+
+r
+ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion",
+       title = "Proportion of Homeless Population by Age Group Over Time") +  # Adding title here
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom",
+        legend.text = element_text(size = 8)) +  # Adjust the legend size
+  scale_fill_manual(values = c("Early Career Stage" = "blue", 
+                               "Working Age" = "pink", 
+                               "Pre-Retirement and Retirement Age" = "green"))
+This will add the title "Proportion of Homeless Population by Age Group Over Time" to the plot. You can modify the title text to suit your specific needs.
+
+
+
+
+
+User:
+make title in twwo lines
+
+ChatGPT:
+You can make the title appear in two lines by using the \n newline character within the title text in the ggtitle() function. Here's the modified code:
+
+r
+ggplot(proportion_data_long, aes(x = Quarter, y = Proportion, fill = Age_Status)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Quarters of a year",
+       y = "Proportion",
+       title = "Proportion of Homeless Population\nby Age Group Over Time") +  # Adding newline with \n
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom",
+        legend.text = element_text(size = 8)) +  # Adjust the legend size
+  scale_fill_manual(values = c("Early Career Stage" = "blue", 
+                               "Working Age" = "pink", 
+                               "Pre-Retirement and Retirement Age" = "green"))
+The \n inside the title argument will split the title into two lines:
+
+"Proportion of Homeless Population"
+"by Age Group Over Time"
+This ensures the title is displayed over two lines.
